@@ -1,0 +1,23 @@
+version: '2'
+services:
+  web:
+    build: .
+    volumes:
+      - ./app:/src/app
+    ports:
+      - 8080:8080
+    command: nodemon
+
+  mongo:
+    image: mongo:latest
+    environment:
+      - MONGO_DATA_DIR=/data/db
+      - MONGO_LOG_DIR=/data/logs
+      # - MONGODB_USER="root"
+      # - MONGODB_PASS="root"
+    # volumes:
+      # - ./data/db:/data/db
+      # - ./data/logs:/var/log/mongodb/mongod.log
+    ports:
+      - 27017:27017
+    command: mongod

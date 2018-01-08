@@ -1,0 +1,23 @@
+{
+  "name": "mywrap",
+  "version": "1.0.0",
+  "description": "MY Wonderful Rest APplication : A nodejs application to manage REST requests and user auth",
+  "main": "index.js",
+  "dependencies": {
+    "bcrypt": "^1.0.3",
+    "jsonwebtoken": "^8.1.0",
+    "mongoose": "^4.13.1",
+    "server": "^1.0.4"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node index.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/LoickVirot/MyWRAP"
+  },
+  "author": "Loïck Virot",
+  "license": "ISC"
+}
