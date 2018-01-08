@@ -1,6 +1,7 @@
 const { json, status } = require('server/reply')
-const bcrypt = require('bcrypt')
-const jwt = require('jsonwebtoken');
+const aes256 = require('aes256')
+const sha256 = require('sha256')
+const jwt = require('jsonwebtoken')
 const User = require('../../model/User')
 
 module.exports = {
@@ -13,7 +14,8 @@ module.exports = {
     }
 
     // Check password
-    if (!await bcrypt.compare(userInfo.password, user.password)) {
+    let decrypt = aes256.decrypt(userInfo.password, user.password)
+    if (decrypt !== sha256(userInfo.password)) {
       return status(401).json("Incorrect password")
     }
 
