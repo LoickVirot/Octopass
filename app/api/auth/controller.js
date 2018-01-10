@@ -28,8 +28,8 @@ module.exports = {
   },
 
   authtest: async ctx => {
-    let token = ctx.headers.authorization.split(" ")[1]
     try {
+      let token = ctx.headers.authorization.split(" ")[1]      
       await jwt.verify(token, ctx.options.secret)
       return json("test ok")
     } catch (e) {
