@@ -3,8 +3,8 @@ const controller = require('./controller')
 
 module.exports = [
   get('/user', ctx => controller.getUsers(ctx)),
-  get('/user/:id', ctx => controller.getUser(ctx)),
+  get('/:id/user', ctx => controller.getUser(ctx)),
   post('/user', ctx => controller.newUser(ctx)),
-  put('/user/:id', ctx => controller.updateUser(ctx)),
-  del('/user/:id', ctx => controller.dropUser(ctx))
+  put('/:id/user', ctx => controller.updateUser(ctx)),
+  del('/:id/user', ctx => controller.dropUser(ctx))
 ]

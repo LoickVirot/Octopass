@@ -12,10 +12,6 @@ module.exports = {
         return json(password)
     },
 
-    getUserPasswords: ctx => {
-        return status(500).json("Not implemented");
-    },
-
     createPassword: async ctx => {
         const webTokenInfo = jwt.decode(ctx.headers.authorization.split(" ")[1], {complete: true})
         const userId = webTokenInfo.payload.id;
@@ -36,5 +32,15 @@ module.exports = {
     getPasswords: async ctx => {
         let passwords = await Password.find({}).populate({path: 'owner'})
         return json(passwords)
+    },
+
+    getUsersPasswords: async ctx => {
+        const webTokenInfo = jwt.decode(ctx.headers.authorization.split(" ")[1], {complete: true})
+        const userId = webTokenInfo.payload.id;
+        try {
+            return json(await Password.find({owner: userId}))
+        } catch(e) {
+            return status(500).json(e)
+        }
     }
 }

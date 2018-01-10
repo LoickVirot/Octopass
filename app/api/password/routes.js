@@ -3,7 +3,7 @@ const controller = require('./controller')
 
 module.exports = [
   get('/passwords', ctx => controller.getPasswords(ctx)), // tests    
-  get('/password/:id', ctx => controller.getPassword(ctx)),
-  get('/password/user/:userId', ctx => controller.getUserPasswords(ctx)),    
+  get('/:id/password', ctx => controller.getPassword(ctx)),
+  get('/user/passwords', ctx => controller.getUsersPasswords(ctx)),
   post('/password', ctx => controller.createPassword(ctx)),
 ]
