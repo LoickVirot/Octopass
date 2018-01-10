@@ -1,12 +1,15 @@
 const { json, status } = require('server/reply')
 const jwt = require('jsonwebtoken')
+const aes256 = require('aes256')
 
 const Password = require('../../model/Password')
 const User = require('../../model/User')
 
 module.exports = {
-    getPassword: ctx => {
-        return status(500).json("Not implemented");
+    getPassword: async ctx => {
+        let password = await Password.findOne({_id: ctx.params.id}).populate({path: 'owner'})
+        password.password = aes256.decrypt(require('../../config/app').encryptKey, password.password)
+        return json(password)
     },
 
     getUserPasswords: ctx => {
