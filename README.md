@@ -2,7 +2,7 @@
 Free and open source password manager, easy to use, client-side decryption.
 
 ## How does it work ?
-To bettenr understand how Octopass work, here is an activit diagram.
+To better understand how Octopass works, here is an activity diagram.
 ![activity diagram](https://img.ziggi.org/S8bpFWsX.png)
 
 With this process, the server never know any passwords from client or user : it always recieve encrypted password.
