@@ -1,9 +1,9 @@
 const { get, post, put, del } = require('server/router')
 const controller = require('./controller')
+const { isAuthenticated } = require('../../middleware/authentication')
 
 module.exports = [
-  get('/passwords', ctx => controller.getPasswords(ctx)), // tests    
-  get('/:id/password', ctx => controller.getPassword(ctx)),
-  get('/user/passwords', ctx => controller.getUsersPasswords(ctx)),
-  post('/password', ctx => controller.createPassword(ctx)),
+  get('/:id/password', isAuthenticated, ctx => controller.getPassword(ctx)),
+  get('/user/passwords', isAuthenticated, ctx => controller.getUsersPasswords(ctx)),
+  post('/password', isAuthenticated, ctx => controller.createPassword(ctx)),
 ]

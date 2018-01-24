@@ -2,12 +2,14 @@ const { error } = require("server/router")
 const { status, json } = require("server/reply") 
 
 module.exports = [
-    error('user', ctx => {
+    error('user.notAuthenticated', ctx => {
+        return status(401).json(ctx.error.message)
+    }),
+    error('user.unauthorized', ctx => {
         return status(401).json(ctx.error.message)
     }),
     error(ctx => {
-        console.error("UNHANDLED ERROR")        
         console.error(ctx.error)
-        return status(401).json(ctx.error.message)
+        return status(500).json("Internal server error")
     })
 ]

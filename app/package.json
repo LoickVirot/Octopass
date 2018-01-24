@@ -9,7 +9,7 @@
     "errors": "^0.3.0",
     "jsonwebtoken": "^8.1.0",
     "mongoose": "^4.13.1",
-    "server": "^1.0.4",
+    "server": "^1.0.17",
     "sha256": "^0.2.0"
   },
   "devDependencies": {},

@@ -1,5 +1,6 @@
 const { json, status } = require('server/reply')
 const User = require('../../model/User')
+const { UnauthorizedError } = require('../../errors/errors')
 
 module.exports = {
   getUsers: async ctx => {
@@ -26,6 +27,9 @@ module.exports = {
   },
 
   updateUser: async ctx => {
+    if ('' + ctx.user._id !== '' + ctx.params.id) {
+      throw new UnauthorizedError()
+    }
     let user = await User.findById(ctx.params.id)
     user.username = ctx.data.username
     try {
@@ -36,6 +40,9 @@ module.exports = {
   },
 
   dropUser: async ctx => {
+    if ('' + ctx.user._id !== '' + ctx.params.id) {
+      throw new UnauthorizedError()
+    }
     try {
       await User.findById(ctx.params.id).remove()
     } catch(err) {
