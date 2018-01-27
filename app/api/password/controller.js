@@ -29,9 +29,9 @@ module.exports = {
         })
         try {
             await password.save()
-            return status(200)
+            return status(200).json(password._id)
         } catch(e) {
-            return status(500).json(e)      
+            return status(500).json(e)
         }
     },
 
