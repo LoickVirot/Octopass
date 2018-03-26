@@ -10,5 +10,11 @@ module.exports = {
             super("You need to login before access to this route.");
             super.code = 'user.notAuthenticated'
         }
+    },
+    DataNotFoundError: class DataNotFoundError extends Error {
+        constructor(message) {
+            super(message)
+            super.code = 'data.notfound'
+        }
     }
 }

@@ -4,11 +4,14 @@ const aes256 = require('aes256')
 
 const Password = require('../../model/Password')
 const User = require('../../model/User')
-const { UnauthorizedError } = require('../../errors/errors')
+const { UnauthorizedError, DataNotFoundError } = require('../../errors/errors')
 
 module.exports = {
     getPassword: async ctx => {
         let password = await Password.findOne({_id: ctx.params.id}).populate({path: 'owner'})
+        if (password === null) {
+            throw new DataNotFoundError("Password not found")
+        }
         // Is password owns to logged owner 
         if ('' + password.owner._id !== '' + ctx.user._id) {
             throw new UnauthorizedError()
@@ -26,9 +29,9 @@ module.exports = {
         })
         try {
             await password.save()
-            return status(200)
+            return status(200).json(password._id)
         } catch(e) {
-            return status(500).json(e)      
+            return status(500).json(e)
         }
     },
 
@@ -41,7 +44,7 @@ module.exports = {
         try {
             return json(await Password.find({owner: ctx.user._id}, {password: 0, owner: 0}))
         } catch(e) {
-            return status(500).json(e)
+            throw new InternalError(e)
         }
     }
 }

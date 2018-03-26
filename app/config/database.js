@@ -1,5 +1,5 @@
 var dbSettings = {
-  host: '172.19.0.3',
+  host: '172.22.0.3',
   port: 27017,
   database: 'octopass',
   user: null,
