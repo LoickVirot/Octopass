@@ -1,11 +1,7 @@
 var dbSettings = {
-<<<<<<< Updated upstream
-  host: '172.19.0.3',
-=======
   host: 'mongo',
->>>>>>> Stashed changes
   port: 27017,
-  database: 'octopass',
+  database: 'octopass_test',
   user: null,
   password: null
 }

@@ -1,4 +1,5 @@
 module.exports = {
-    encryptKey: "secret"
+    encryptKey: "secret",
+    domain: 'http://localhost:8080'
 }
   
