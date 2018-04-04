@@ -1,6 +1,6 @@
 {
   "name": "mywrap",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "description": "MY Wonderful Rest APplication : A nodejs application to manage REST requests and user auth",
   "main": "index.js",
   "dependencies": {
