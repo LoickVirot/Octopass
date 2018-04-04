@@ -189,8 +189,6 @@ describe('Password', () => {
             res = await chai.request(server)
                 .delete('/'+ password._id +'/password')
                 .set('Authorization', token)
-            console.log('/' + password._id + '/password')
-            console.log(res.body)
             assert.equal(res.status, 200)
 
             res = await chai.request(server)
@@ -244,6 +242,92 @@ describe('Password', () => {
                 .set('Authorization', token)
             assert.equal(res.status, 200)
             assert.equal(res.body.length, 1)
+        })
+    })
+
+    describe('PUT /:id/password', () => {
+        let password
+        beforeEach(async () => {
+            passwordObject = new Password({
+                serviceName: 'Test1',
+                password: 'Test1',
+                owner: '5ac295e62b9d5d7328fdf7ef'
+            })
+            await passwordObject.save()
+
+            let res = await chai.request(server)
+                .get('/' + passwordObject._id + '/password')
+                .set('Authorization', token)
+            assert.equal(res.status, 200)
+            password = res.body
+        })
+
+        it('Should update serviceName only', async () => {
+            let  res = await chai.request(server)
+                .put('/' + password._id + '/password')
+                .set('Authorization', token)
+                .send({
+                    serviceName: 'TestUpdated'
+                })
+            assert.equal(res.status, 201)
+            assert.equal(res.body.serviceName, 'TestUpdated')
+            assert.equal(res.body.password, 'Test1')
+            assert.equal(res.body.owner, '5ac295e62b9d5d7328fdf7ef')
+        })
+
+        it('Should update password only', async () => {
+            let res = await chai.request(server)
+                .put('/' + password._id + '/password')
+                .set('Authorization', token)
+                .send({
+                    password: 'TestUpdated'
+                })
+            assert.equal(res.status, 201)
+            assert.equal(res.body.serviceName, 'Test1')
+            assert.equal(res.body.password, 'TestUpdated')
+            assert.equal(res.body.owner, '5ac295e62b9d5d7328fdf7ef')
+        })
+
+        it('Should update servicename and password', async () => {
+            let res = await chai.request(server)
+                .put('/' + password._id + '/password')
+                .set('Authorization', token)
+                .send({
+                    serviceName: 'TestUpdated',
+                    password: 'TestUpdated'                    
+                })
+            assert.equal(res.status, 201)
+            assert.equal(res.body.serviceName, 'TestUpdated')
+            assert.equal(res.body.password, 'TestUpdated')
+            assert.equal(res.body.owner, '5ac295e62b9d5d7328fdf7ef')
+        })
+
+        it('Should not update password and return a 404 error', async () => {
+            let res = await chai.request(server)
+                .put('/5ac295e62b9d5d7328fdf7aa/password')
+                .set('Authorization', token)
+                .send({
+                    serviceName: 'TestUpdated',
+                    password: 'TestUpdated'
+                })
+            assert.equal(res.status, 404)
+        })
+
+        it('Should not update password and return a 401 error', async () => {
+            let password2 = new Password({
+                serviceName: 'TestFail',
+                password: 'TestFail',
+                owner: '5ac528d73f9f953186eba98c'
+            })
+            await password2.save()
+            let res = await chai.request(server)
+                .put('/' + password2._id + '/password')
+                .set('Authorization', token)
+                .send({
+                    serviceName: 'TestUpdated',
+                    password: 'TestUpdated'
+                })
+            assert.equal(res.status, 401)
         })
     })
 })

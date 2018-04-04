@@ -22,7 +22,6 @@ module.exports = {
         if (password.owner._id.toString() !== ctx.user._id.toString()) {
             throw new UnauthorizedError()
         }
-        password.password = aes256.decrypt(require('../../config/app').encryptKey, password.password)
         return json(password)
     },
 
@@ -73,5 +72,27 @@ module.exports = {
         } catch (err) {
             throw new Error(err)
         }
+    },
+
+    updatePassword: async ctx => {
+        let password
+        try {
+            password = await Password.findById(ctx.params.id) 
+        } catch (err) {
+            throw new Error(err)
+        }
+        if (password === null)
+            throw new DataNotFoundError("Password not found.")
+        if (password.owner.toString() !== ctx.user._id.toString())
+            throw new UnauthorizedError()        
+
+        if (ctx.data.serviceName)
+            password.serviceName = ctx.data.serviceName
+
+        if (ctx.data.password)
+            password.password = ctx.data.password
+
+        password = await password.save()
+        return status(201).json(password) 
     }
 }

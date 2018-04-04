@@ -7,4 +7,5 @@ module.exports = [
   get('/user/passwords', isAuthenticated, ctx => controller.getUsersPasswords(ctx)),
   post('/password', isAuthenticated, ctx => controller.createPassword(ctx)),
   del('/:id/password', isAuthenticated, ctx => controller.dropPassword(ctx)),
+  put('/:id/password', isAuthenticated, ctx => controller.updatePassword(ctx))
 ]
