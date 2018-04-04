@@ -11,12 +11,10 @@ module.exports = {
             super.code = 'user.notAuthenticated'
         }
     },
-    NotFoundError: class NotFountError extends Error {
-        constructor(message = null) {
-            if (message === null)
-                message = "requested object not found."
+    DataNotFoundError: class DataNotFoundError extends Error {
+        constructor(message) {
             super(message)
-            super.code = 'base.notFound'
+            super.code = 'data.notfound'
         }
-    },
+    }
 }

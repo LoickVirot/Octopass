@@ -1,5 +1,6 @@
 const server = require('server')
 const { get, post } = server.router
+const { header } = server.reply
 const mongoose = require('mongoose')
 
 if (process.env.NODE_ENV === undefined) {
@@ -25,6 +26,7 @@ const cors = [
 
 let app = server(
   require('./config/server'),
+  cors,
   ctx => {
     ctx.mongoose = mongoose
   },
