@@ -19,7 +19,7 @@ module.exports = {
         }
       
         // Is password owns to logged owner 
-        if ('' + password.owner._id !== '' + ctx.user._id) {
+        if (password.owner._id.toString() !== ctx.user._id.toString()) {
             throw new UnauthorizedError()
         }
         password.password = aes256.decrypt(require('../../config/app').encryptKey, password.password)
@@ -50,7 +50,28 @@ module.exports = {
         try {
             return json(await Password.find({owner: ctx.user._id}, {password: 0, owner: 0}))
         } catch(e) {
-            throw new InternalError(e)
+            throw new Error(e)
+        }
+    },
+
+    dropPassword: async ctx => {
+        let password
+        try {
+            password = await Password.findOne({ _id: ctx.params.id })
+        } catch (err) {
+            throw new Error(err)
+        }
+        if (password === null) {
+            throw new DataNotFoundError("Password not found.")
+        }
+        if (password.owner.toString() !== ctx.user.id.toString()) {
+            throw new UnauthorizedError()
+        }
+        try {
+            await Password.remove({ _id: password._id })
+            return status(200)
+        } catch (err) {
+            throw new Error(err)
         }
     }
 }
