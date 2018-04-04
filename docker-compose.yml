@@ -5,8 +5,8 @@ services:
     volumes:
       - ./app:/src/app
     ports:
-      - 8080:8080
-    command: nodemon
+      - 8081:8080
+    command: nodemon --exec npm start
 
   mongo:
     image: mongo:latest

@@ -1,21 +1,24 @@
 {
   "name": "mywrap",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "description": "MY Wonderful Rest APplication : A nodejs application to manage REST requests and user auth",
   "main": "index.js",
   "dependencies": {
     "aes256": "^1.0.2",
     "bcrypt": "^1.0.3",
+    "chai": "^4.1.2",
     "errors": "^0.3.0",
     "jsonwebtoken": "^8.1.0",
     "mongoose": "^4.13.1",
     "server": "^1.0.17",
     "sha256": "^0.2.0"
   },
-  "devDependencies": {},
+  "devDependencies": {
+    "chai-http": "^4.0.0"
+  },
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "node index.js"
+    "test": "NODE_ENV=test mocha ./test/*",
+    "start": "NODE_ENV=test node index.js"
   },
   "repository": {
     "type": "git",
