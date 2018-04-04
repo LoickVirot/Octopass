@@ -3,7 +3,18 @@ const { get, post } = server.router
 const { header } = server.reply
 const mongoose = require('mongoose')
 
-mongoose.connect(require('./config/database'), { useMongoClient: true })
+if (process.env.NODE_ENV === undefined) {
+  process.env.NODE_ENV = 'development'
+}
+
+let databaseConfig
+if (process.env.NODE_ENV === 'test') {
+  databaseConfig = require('./config/database.test')
+} else {
+  databaseConfig = require('./config/database')
+}
+
+mongoose.connect(databaseConfig, { useMongoClient: true })
 mongoose.Promise = global.Promise
 
 const cors = [
@@ -13,7 +24,7 @@ const cors = [
   ctx => ctx.method.toLowerCase() === 'options' ? 200 : false
 ];
 
-server(
+let app = server(
   require('./config/server'),
   cors,
   ctx => {
@@ -22,3 +33,7 @@ server(
   require('./api/routes.js'),
   require('./errors/errorManager.js'),
 )
+
+console.log('env: ' + process.env.NODE_ENV)
+
+module.exports = app

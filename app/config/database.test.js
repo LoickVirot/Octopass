@@ -1,7 +1,7 @@
 var dbSettings = {
   host: 'mongo',
   port: 27017,
-  database: 'octopass',
+  database: 'octopass_test',
   user: null,
   password: null
 }
