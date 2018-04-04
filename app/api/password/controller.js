@@ -4,11 +4,18 @@ const aes256 = require('aes256')
 
 const Password = require('../../model/Password')
 const User = require('../../model/User')
-const { UnauthorizedError } = require('../../errors/errors')
+const { UnauthorizedError, NotFoundError } = require('../../errors/errors')
 
 module.exports = {
     getPassword: async ctx => {
-        let password = await Password.findOne({_id: ctx.params.id}).populate({path: 'owner'})
+        let password
+        try {
+            password = await Password.findOne({_id: ctx.params.id}).populate({path: 'owner'})
+        } catch (err) {
+            throw new Error(err)
+        }
+        if (password === null)
+            throw new NotFoundError("Password cannot be found")
         // Is password owns to logged owner 
         if ('' + password.owner._id !== '' + ctx.user._id) {
             throw new UnauthorizedError()
