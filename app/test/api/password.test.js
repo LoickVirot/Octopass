@@ -105,7 +105,6 @@ describe('Password', () => {
                 .get('/' + password2._id + '/password')
                 .set('Authorization', token)
 
-            console.log(res.body)
             assert.equal(res.status, 401)
         })
 
@@ -117,4 +116,57 @@ describe('Password', () => {
             assert.equal(res.status, 404)
         })
     })
+
+    describe('POST /:id/password', () => {
+        let passwordToCreate = {
+            serviceName: "TestCreate",
+            password: "TestCreate",
+        }
+        
+        it('Should create password', async () => {
+            let res = await chai.request(server)
+                .get('/user/passwords')
+                .set('Authorization', token)
+            assert.equal(res.status, 200)
+            assert.equal(res.body.length, 0)
+
+            res = await chai.request(server)
+                .post('/password')
+                .set('content-type', 'application/json')
+                .set('Authorization', token)                
+                .send(passwordToCreate)
+            assert.equal(res.status, 200)
+            
+            res = await chai.request(server)
+                .get('/user/passwords')
+                .set('Authorization', token)
+            assert.equal(res.status, 200)
+            assert.equal(res.body.length, 1)
+        })
+
+        it('Should return an error and not create password', async () => {
+            let res = await chai.request(server)
+                .get('/user/passwords')
+                .set('Authorization', token)
+            assert.equal(res.status, 200)
+            assert.equal(res.body.length, 0)
+
+            res = await chai.request(server)
+                .post('/password')
+                .set('content-type', 'application/json')
+                .set('Authorization', token)
+                .send({
+                    test: "youlolnblkn"
+                })
+            assert.equal(res.status, 500)
+
+            res = await chai.request(server)
+                .get('/user/passwords')
+                .set('Authorization', token)
+            assert.equal(res.status, 200)
+            assert.equal(res.body.length, 0)
+        })
+    })
+
+
 })

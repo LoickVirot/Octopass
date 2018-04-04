@@ -35,7 +35,7 @@ module.exports = {
             await password.save()
             return status(200)
         } catch(e) {
-            return status(500).json(e)      
+            return new Error(e)      
         }
     },
 
